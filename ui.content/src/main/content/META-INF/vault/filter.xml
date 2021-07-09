@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspaceFilter version="1.0">
+    <filter root="/conf/vortexforce" mode="merge"/>
+    <filter root="/content/vortexforce" mode="merge"/>
+    <filter root="/content/dam/vortexforce/asset.jpg" mode="merge"/>
+    <filter root="/content/experience-fragments/vortexforce" mode="merge"/>
+</workspaceFilter>
