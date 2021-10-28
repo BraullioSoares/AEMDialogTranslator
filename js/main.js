@@ -3,7 +3,7 @@ $(document).ready(function() {
     var baseUrl = 'https://translate.astian.org/translate',
         dialogInput = $('#xml-dialog-input'),
         wordsArray = [],
-        translatedArray = []
+        translatedArray = [],
         dialogOutput =  $('#xml-dialog-output'), 
         selectedLang = $('#selected-lang'),
         btnGO = $('#btn-go');
@@ -15,15 +15,23 @@ $(document).ready(function() {
         fieldDescrption: /fieldDescription="(.*?)"/gim
     }
     
-    $(btnGO).click(function() {
+    $(btnGO).click(async function() {
         const regexes = Object.values(regexConstants);
+        var content = "Label Text"
+        var langSource = "en";
+        var langTarget = "pt";
 
         regexes.forEach(reg => {
             extractWords(reg);
         });
-        var test = translate();
-        console.log(test);
-        
+
+        translate(content, langSource, langTarget)
+            .then((data) => {
+                console.log(data.translatedText);
+            })
+            .catch(function(err){
+                console.error("There was an error: " + err);
+            });        
     });
     
     /**
@@ -57,20 +65,18 @@ $(document).ready(function() {
         }
     }
 
-    async function translate() {
-        console.log(wordsArray.toString());
+    async function translate(content, langSource, langTarget) {
         const res = await fetch(baseUrl, {
             method: "POST",
             body: JSON.stringify({
-                q: "testing this out",
-                source: "en",
-                target: "pt"
+                q: content,
+                source: langSource,
+                target: langTarget,
+                format: "text"
             }),
             headers: { "Content-Type": "application/json" }
-        }).then(function(data)  {
-            data.json();
         });
-
-        return res;
-    }
+        
+        return res.json();
+    };
 })
